@@ -5,11 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script type="module" src="/src/app.ts" defer></script>
+    <link href="https://cdn.jsdelivr.net/npm/reset-css@5.0.2/reset.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/main.scss" />
 </head>
 <body>
     <nav class="nav">
-        <a href="/" class="nav_item" data-link>Home</a>
+        <a href="/" class="nav_item" data-link id="logo">
+            <img 
+                alt="Disney Plus Logo"
+                src="./public/images/logo.svg"
+            />
+        </a>
         <a href="/posts" class="nav_item" data-link>Posts</a>
         <a href="/settings" class="nav_item" data-link>Settings</a>
     </nav>

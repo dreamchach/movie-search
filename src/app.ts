@@ -1,4 +1,4 @@
-import Home from './js/pages/Home.ts'
+import Login from './js/pages/Login.ts'
 import Posts from './js/pages/Posts.ts'
 import Settings from './js/pages/Settings.ts'
 import NotFound from './js/pages/NotFound.ts'
@@ -8,7 +8,7 @@ const nav = document.querySelector('nav') as HTMLElement
 
 const router = async () => {
     const routes = [
-        { path: "/", view: Home() },
+        { path: "/", view: Login() },
         { path: "/posts", view: Posts() },
         { path: "/settings", view: Settings() },
     ]
@@ -45,3 +45,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.addEventListener('popstate', () => router())
 
+window.addEventListener('scroll', () => {
+    if(window.scrollY < 50) {
+        nav.style.backgroundColor = '#090b13'
+    } else {
+        nav.style.backgroundColor = 'transparent'
+    }
+})
