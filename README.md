@@ -536,3 +536,145 @@ if (tempProperty !== undefined) {
 ```
 
 특정 상황에 가장 적합한 옵션을 선택하세요.
+
+3. Login Page 디자인
+
+# javascript로 배경색을 변경
+
+해결책
+
+JavaScript를 사용하여 HTML 요소의 배경색을 변경하는 방법은 다음과 같습니다:
+
+```javascript
+// JavaScript로 요소를 선택합니다.
+var element = document.getElementById("elementID"); // 요소의 ID를 사용하는 예시
+
+// 선택한 요소의 배경색을 변경합니다.
+element.style.backgroundColor = "컬러코드 또는 컬러이름";
+```
+
+위 코드에서, "elementID"는 배경색을 변경하고자 하는 HTML 요소의 ID입니다. "컬러코드 또는 컬러이름"은 원하는 배경색을 나타내는 CSS 컬러 코드나 이름을 사용하면 됩니다.
+
+예를 들어, 요소의 ID가 "myElement"이고 배경색을 빨간색으로 변경하고 싶다면, 다음과 같이 코드를 작성할 수 있습니다:
+
+```javascript
+var element = document.getElementById("myElement");
+element.style.backgroundColor = "red";
+```
+
+이제 "myElement"의 배경색이 빨간색으로 변경됩니다.
+
+# scss에서 hover 사용
+
+해결책
+
+SCSS에서 :hover 상태를 사용하려면 일반적으로 다음과 같은 방법을 사용합니다:
+
+일반 CSS와 동일한 방법으로 :hover 선택자를 사용합니다.
+예를 들어, 다음은 SCSS에서 :hover를 사용하여 요소의 배경색을 변경하는 예시입니다:
+
+```css
+.my-element {
+  background-color: blue;
+
+  &:hover {
+    background-color: red;
+  }
+}
+```
+
+위의 코드에서, .my-element 클래스의 기본 배경색은 파란색이고, 해당 요소가 호버될 때 배경색이 빨간색으로 변경됩니다. &는 부모 선택자를 나타냅니다.
+
+변수를 사용하여 hover 상태 스타일을 정의할 수도 있습니다.
+```css
+Copy code
+$primary-color: blue;
+$hover-color: red;
+
+.my-element {
+  background-color: $primary-color;
+
+  &:hover {
+    background-color: $hover-color;
+  }
+}
+```
+
+이 방법은 재사용성을 높일 수 있습니다. $primary-color와 $hover-color는 원하는 색상 값을 나타내는 변수입니다.
+
+이렇게 하면 SCSS에서 :hover 상태를 사용하여 요소의 스타일을 변경할 수 있습니다.
+
+# JavaScript를 사용한 <img>태그 제어
+
+1. 이미지 경로 수정: src 폴더에 이미지를 넣고, 이를 import하여 사용하는 것이 좋습니다.
+
+예시:
+
+```javascript
+import logoOne from '../public/images/cta-logo-one.svg';
+
+const getHtml = () => {
+  return `<img id="login-logo-one" src="${logoOne}" alt="logo-one" />`;
+}
+
+export default getHtml;
+```
+위와 같이 이미지를 import하여 변수에 할당하고, 그 변수를 템플릿 리터럴에 넣어 사용합니다.
+
+2. Parcel 설정 확인: Parcel이 이미지 파일을 올바르게 처리하도록 설정되어 있는지 확인하세요. 대부분의 경우 기본 설정에서 이미지 파일은 자동으로 번들링됩니다.
+
+3. 서버 실행: 개발 서버가 실행 중이어야 이미지가 올바르게 로드됩니다.
+
+4. 파일 경로에 대문자 확인: 파일 시스템은 대소문자를 구분하므로 파일 이름과 경로가 정확한지 다시 한번 확인하세요.
+
+5. 프로젝트 구조 확인: 프로젝트 구조가 올바른지 확인하세요. src 폴더에 이미지 폴더(images)가 포함되어 있어야 합니다.
+
+이러한 단계를 따라도 문제가 해결되지 않는다면, 더 많은 정보가 필요할 수 있습니다. 이 경우 더 많은 코드 및 프로젝트 구성 정보를 제공해 주시면 도움을 드릴 수 있습니다.
+
+# Cannot find module '../../public/images/cta-logo-one.svg' or its corresponding type declarations.
+
+이러한 오류는 TypeScript가 해당 모듈을 찾지 못한다는 것을 나타냅니다. 일반적으로 TypeScript에서 이미지 파일을 모듈로 가져오려면 몇 가지 추가적인 설정이 필요합니다.
+
+1. 타입 선언 파일 생성: 먼저, TypeScript가 이미지 파일을 모듈로 인식할 수 있도록 타입 선언 파일(.d.ts)을 생성해야 합니다. 프로젝트 루트에 images.d.ts 또는 유사한 이름의 파일을 만들고 다음 내용을 추가합니다:
+
+```javascript
+declare module "*.svg" {
+  const content: any;
+  export default content;
+}
+```
+
+이 파일은 SVG 파일을 모듈로 사용할 수 있도록 선언합니다.
+
+2. 이미지 가져오기: TypeScript 파일에서 이미지를 가져올 때는 다음과 같이 사용합니다:
+
+```javascript
+import logoOne from '../../public/images/cta-logo-one.svg';
+
+const getHtml = () => {
+  return `<img id="login-logo-one" src="${logoOne}" alt="logo-one" />`;
+}
+
+export default getHtml;
+```
+
+위와 같이 import 문을 사용하여 이미지를 가져오고, 해당 변수를 템플릿 리터럴에 사용합니다.
+
+3. 확장자에 따른 모듈 추가: 만약 SVG 파일 이외에도 다른 이미지 확장자를 사용하고 싶다면, images.d.ts 파일에 해당 확장자에 대한 모듈을 추가해야 합니다.
+
+예를 들어, PNG 파일을 사용하려면 다음과 같이 추가할 수 있습니다:
+
+```javascript
+declare module "*.png" {
+  const content: any;
+  export default content;
+}
+```
+
+그리고 TypeScript 파일에서 PNG 파일을 가져오는 것은 아래와 같이 할 수 있습니다:
+
+```javascript
+import logoTwo from '../../public/images/cta-logo-two.png';
+```
+
+이러한 단계를 따라 이미지를 모듈로 사용하도록 TypeScript를 구성하면 오류가 해결될 것입니다.
