@@ -2,7 +2,6 @@ import LogoOne from '../../public/images/cta-logo-one.svg'
 import LogoTwo from '../../public/images/cta-logo-two.png'
 
 const getHtml = () => {
-    document.title = 'Home'
     return `
         <section id="login-container">
             <div id="login-content">
