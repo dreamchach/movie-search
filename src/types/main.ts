@@ -5,6 +5,7 @@ export interface IMovieDetail {
     overview: string;
     videos : IVideo;
     backdrop_path : string;
+    id : string;
 }
 export interface IVideo {
     results : [{
@@ -13,18 +14,33 @@ export interface IVideo {
 }
 
 export interface IRowMovie {
-    id : number;
-    name : string;
-    title : string;
-    backdrop_path : string;
+    id? : number;
+    title? : string;
+    backdrop_path? : string;
+    release_date? : string;
+    vote_average? : number;
+    overview? : string;
+    genre_ids : number[];
 }
 
-export interface IModalMovie {
-    backdrop_path : string;
+export interface IGenres {
+    id : number;
+    name : string;
+}
+
+export interface IDetailMovie {
+    adult? : boolean;
+    genres? : IGenres[];
+    id? : number;
+    original_title? : string;
+    overview? : string;
+    poster_path? : string;
+    production_countries? : IGenres[];
     release_date? : string;
-    first_air_date? : string;
+    runtime? : number;
+    tagline? : string;
     title? : string;
-    name? : string;
-    vote_average : number;
-    overview : string;
+    video? : IVideo;
+    vote_average? : number;
+    popularity? : number;
 }

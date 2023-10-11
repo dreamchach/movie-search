@@ -19,8 +19,8 @@ export const categoryLists = [
 ]
 
 export const rowLists = [
-    {title : 'Trending Now', id : 'TN', fetchUrl : requests.fetchTrending},
+    {title : 'Now Playing', id : 'NP', fetchUrl : requests.fetchNowPlaying},
+    {title : 'Popular Movies', id : 'PM', fetchUrl : requests.fetchPopular},
     {title : 'Top Rated', id : 'TR', fetchUrl : requests.fetchTopRated},
-    {title : 'Action Movies', id : 'AM', fetchUrl : requests.fetchActionMovies},
-    {title : 'Comedy Movies', id : 'CM', fetchUrl : requests.fetchComedyMovies},
+    {title : 'Upcoming Movies', id : 'UM', fetchUrl : requests.fetchUpcoming},
 ]

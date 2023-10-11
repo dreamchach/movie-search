@@ -1,9 +1,21 @@
 import LogoOne from '../../public/images/cta-logo-one.svg'
 import LogoTwo from '../../public/images/cta-logo-two.png'
+import Logo from '../../public/images/logo.svg'
 
 const getHtml = () => {
     return `
         <section id="login-container">
+            <nav class="nav">
+                <a href="/" class="nav_item" data-link id="logo">
+                    <img 
+                        alt="Disney Plus Logo"
+                        src="${Logo}"
+                    />
+                </a>
+                <a id="login" class='log'>
+                    <div>LOGIN</div>
+                </a>
+            </nav>
             <div id="login-content">
                 <div id="login-center">
                     <img id="login-logo-one" src="${LogoOne}" alt="logo-one" />

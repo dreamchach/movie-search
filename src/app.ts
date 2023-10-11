@@ -2,15 +2,23 @@ import Login from './js/pages/Login.ts'
 import Main from './js/pages/Main.ts'
 import Search from './js/pages/Search.ts'
 import Detail from './js/pages/Detail.ts'
+import NotFound from './js/pages/NotFound.ts'
 import requests from './axios/request.ts'
 import instance from './axios/instance.ts'
 import { rowLists } from './js/utill/lists.ts'
 import Swiper from 'swiper'
 import 'swiper/swiper-bundle.css'
 import { Navigation, Pagination, Scrollbar, A11y } from 'swiper/modules'
+import auth from './firebase.ts'
+import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth'
 
-const app = document.querySelector('.App') as HTMLElement
+const web = document.querySelector('.App') as HTMLElement
 const nav = document.querySelector('nav') as HTMLElement
+const searchInput = document.querySelector('.search-input') as HTMLElement
+let searchPage = 1
+
+//const auth = getAuth()
+const provider = new GoogleAuthProvider()
 
 const getNowPlaying = async () => {
     const response = await instance.get(requests.fetchNowPlaying)
@@ -19,7 +27,6 @@ const getNowPlaying = async () => {
     return res.data
 }
 const nowPlayData = getNowPlaying()
-let isClicked = false
 
 
 const fetchRow = async (url : string) => {
@@ -29,14 +36,13 @@ const fetchRow = async (url : string) => {
 const rows = rowLists.map(async (item) => {
     return {...item, fetchUrl : await fetchRow(item.fetchUrl)}
 })
-let modalOpen = ''
-let movieSelected = ''
 
-const router = async (isClicked : boolean) => {
+const router = async () => {
     const routes = [
         { path: "/", view: await Login() },
-        { path: "/main", view: await Main(isClicked, await nowPlayData, await rows, modalOpen, movieSelected) },
-        { path: "/search", view: await Search() }
+        { path: "/main", view: await Main(await nowPlayData, await rows) },
+        { path: "/search", view: await Search(searchPage) },
+        { path: '/detail', view: await Detail() }
     ]
 
     const pageMatches = routes.map((route) => {
@@ -47,91 +53,81 @@ const router = async (isClicked : boolean) => {
     })
     
     let match = pageMatches.find((pageMatch) => pageMatch.isMatch);
-    if(match) {
+
+    if(match && match.route.view !== undefined) {
         const page = match.route.view
-        app.innerHTML = page
-        
-        const mainBannerButton = document.querySelector('.banner-button')
-        mainBannerButton?.addEventListener('click', () => {
-            isClicked = !isClicked
-            router(isClicked)
-        })
+        web.innerHTML = page
         
         const swiper = new Swiper('.swiper', {
             modules : [Navigation, Pagination, Scrollbar, A11y],
             loop : true,
-            navigation : true,
+            navigation : {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev'
+            },
             pagination : {
                 clickable : true
             },
             breakpoints : {
                 1378 : {
-                    slidesPerView : 6,
-                    slidesPerGroup : 6
-                },
-                998 : {
-                    slidesPerView : 5,
-                    slidesPerGroup : 5
-                },
-                625 : {
                     slidesPerView : 4,
                     slidesPerGroup : 4
                 },
-                0 : {
+                998 : {
                     slidesPerView : 3,
                     slidesPerGroup : 3
+                },
+                625 : {
+                    slidesPerView : 2,
+                    slidesPerGroup : 2
+                },
+                0 : {
+                    slidesPerView : 1,
+                    slidesPerGroup : 1
                 }
             }
         })
-        const row1 = document.querySelector('#row-container-1')
-        row1?.addEventListener('click', (event) => {
-            modalOpen = ''
-            if((event.target as HTMLElement).className === 'swiper-img') {
-                modalOpen = 'row1'
-                movieSelected = (event.target as HTMLElement).id
-                router(isClicked)
-            }
+
+        const loginButton = document.querySelector('#login')
+        loginButton?.addEventListener('click', () => {
+            signInWithPopup(auth, provider)
+            .then((res) => console.log(res))
+            .catch((error) => console.log(error))
         })
-        const row2 = document.querySelector('#row-container-2')
-        row2?.addEventListener('click', (event) => {
-            modalOpen = ''
-            if((event.target as HTMLElement).className === 'swiper-img') {
-                modalOpen = 'row2'
-                movieSelected = (event.target as HTMLElement).id
-                router(isClicked)
-            }
+
+        const NextPageButton = document.querySelector('.next-page')
+        NextPageButton?.addEventListener('click', () => {
+            searchPage += 1
+            router()
         })
-        const row3 = document.querySelector('#row-container-3')
-        row3?.addEventListener('click', (event) => {
-            modalOpen = ''
-            if((event.target as HTMLElement).className === 'swiper-img') {
-                modalOpen = 'row3'
-                movieSelected = (event.target as HTMLElement).id
-                router(isClicked)
-            }
+        const PrevPageButton = document.querySelector('.prev-page')
+        PrevPageButton?.addEventListener('click', () => {
+            searchPage -= 1
+            router()
         })
-        const row4 = document.querySelector('#row-container-4')
-        row4?.addEventListener('click', (event) => {
-            console.log(event.target)
-            modalOpen = ''
-            if((event.target as HTMLElement).className === 'swiper-img') {
-                modalOpen = 'row4'
-                movieSelected = (event.target as HTMLElement).id
-                router(isClicked)
-            }
-        })
-        const modalClose = document.querySelector('.modal-close')
-        modalClose?.addEventListener('click', () => {
-            modalOpen = ''
-            router(isClicked)
+
+        const logoutButton = document.querySelector('#logout')
+        logoutButton?.addEventListener('click', () => {
+            signOut(auth)
+            .then(() => {
+                if(location.pathname !== '/') location.pathname = '/'
+            })
+            .catch((error) => console.log(error))
         })
     } else {
-        let page = await Detail()
-        app.innerHTML = page
+        let page = await NotFound()
+        web.innerHTML = page  
     }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    onAuthStateChanged(auth, (user) => {
+        if(user) {
+            if(location.pathname === '/') {
+                location.pathname = '/main'
+            }
+        }else if(location.pathname !== '/') location.pathname = '/'
+    })
     nav.addEventListener('click', (event : Event) => {
         const target = event.target as HTMLAnchorElement
         if(target.matches('[data-link]')) {
@@ -139,15 +135,14 @@ document.addEventListener('DOMContentLoaded', () => {
             history.pushState(null, '', target.href)
         }
     })
-    router(isClicked)
+    router()
+
+    searchInput.addEventListener('keyup', (event) => {
+        if(event.key === 'Enter') {
+            const search = (event.target as HTMLInputElement).value
+            location.href = `/search?${search}`
+        }
+    })
 })
 
-window.addEventListener('popstate', () => router(isClicked))
-
-window.addEventListener('scroll', () => {
-    if(window.scrollY < 50) {
-        nav.style.backgroundColor = '#090b13'
-    } else {
-        nav.style.backgroundColor = 'transparent'
-    }
-})
+window.addEventListener('popstate', () => router())

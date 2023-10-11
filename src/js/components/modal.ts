@@ -1,18 +1,6 @@
-import { IModalMovie } from "../../types/main"
+import { IRowMovie } from "../../types/main"
 
-const modal = (modalOpen : string, movieSelected : string, id : string) => {
-    let movie : IModalMovie = {
-        backdrop_path : '',
-        release_date : '',
-        first_air_date : '',
-        title : '',
-        name : '',
-        vote_average : 0,
-        overview : ''
-    }
-    if(movieSelected !== '') {
-        movie = JSON.parse(movieSelected)
-    }
+const modal = (modalOpen : string, movieSelected : IRowMovie, id : string) => {
     if(modalOpen === id) return `
         <div class="modal-presentation">
             <div class="wrapper-modal">
@@ -22,16 +10,16 @@ const modal = (modalOpen : string, movieSelected : string, id : string) => {
                     </span>
                     <img
                         class="modal-poster-img"
-                        src="https://image.tmdb.org/t/p/original/${movie.backdrop_path}"
+                        src="https://image.tmdb.org/t/p/original/${movieSelected.backdrop_path}"
                         alt="modal-img"
                     />
                     <div class="modal-content">
                         <p class="modal-detail">
-                            <span class="modal-user-perc">100% for you ${movie.release_date ? movie.release_date : movie.first_air_date}</span>
+                            <span class="modal-user-perc">100% for you ${movieSelected.release_date ? movieSelected.release_date : movieSelected.first_air_date}</span>
                         </p>
-                        <h2 class="modal-title">${movie.title ? movie.title : movie.name}</h2>
-                        <p class="modal-overview">평점 : ${movie.vote_average}</p>
-                        <p class="modal-overview">${movie.overview}</p>
+                        <h2 class="modal-title">${movieSelected.title ? movieSelected.title : movieSelected.name}</h2>
+                        <p class="modal-overview">평점 : ${movieSelected.vote_average}</p>
+                        <p class="modal-overview">${movieSelected.overview}</p>
                     </div>
                 </div>
             </div>
