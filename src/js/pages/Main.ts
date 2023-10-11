@@ -1,6 +1,5 @@
-import Logo from '../../public/images/logo.svg'
 import banner from '../components/banner.ts'
-import { IMovieDetail, IRowMovie } from '../../types/main.ts'
+import { IMovieDetail } from '../../types/main.ts'
 import row from '../components/row.ts'
 
 const getHtml = async (nowPlayData : IMovieDetail, rows : any) => {

@@ -8,7 +8,7 @@ declare module "*.png" {
     export default content
 }
 
-declare module '*.mp4' {
+declare module '_redirects' {
     const content : any;
     export default content
 }

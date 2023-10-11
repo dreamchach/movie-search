@@ -1,6 +1,5 @@
 import instance from "../../axios/instance"
 import { IDetailMovie, IGenres } from "../../types/main"
-import { turncate } from "../utill/functions"
 
 const getHtml = async () => {
     if(location.pathname === '/detail') {
