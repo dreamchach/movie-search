@@ -2,7 +2,7 @@
   "name": "movie-search",
   "version": "1.0.0",
   "description": "",
-  "main": "index.html",
+  "main": "dist/index.6b815632.js",
   "scripts": {
     "start": "parcel src/index.html"
   },
