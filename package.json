@@ -2,10 +2,9 @@
   "name": "movie-search",
   "version": "1.0.0",
   "description": "",
-
   "scripts": {
     "start": "parcel src/index.html",
-    "build" : "parcel build src/index.html --public-url src/public/_redirects"
+    "build": "parcel build src/index.html --public-url src/public/_redirects"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +13,7 @@
     "axios": "^1.5.0",
     "dotenv": "^16.3.1",
     "firebase": "^10.4.0",
+    "firebase-tools": "^12.6.2",
     "parcel": "^2.9.3",
     "sass": "^1.68.0",
     "swiper": "^10.3.0"
@@ -35,10 +35,5 @@
     "typescript": "^5.2.2",
     "url": "^0.11.3",
     "util": "^0.12.5"
-  },
-  "parcel": {
-    "transformers": {
-      "*.mp4": "@parcel/transformer-raw"
-    }
   }
 }
