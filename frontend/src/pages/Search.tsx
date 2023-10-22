@@ -26,12 +26,14 @@ const searchMovie = gql`
 
 const Search = () => {
   const location = useLocation()
-  const [page, setPage] = useState(1)
-  const search = decodeURI(location.pathname).substring(8)
+  const value = decodeURI(location.search)
+  const searchParams = new URLSearchParams(value)
+  const search = searchParams.get('value')
+  const page = searchParams.get('page')
   const {data, loading, error} = useQuery(searchMovie, {
     variables : {
       keyword : search,
-      page : page
+      page : Number(page)
     }
   })
   const totalPage = data?.getSearch?.total_pages
@@ -58,7 +60,7 @@ const Search = () => {
             <SearchMovieData data={item}/>
           </SearchMovie>
         ))}
-        <PageNavi page={page} total={totalPage} setPage={setPage}/>
+        <PageNavi page={page} total={totalPage} value={search}/>
       </SearchContainer>
     </div>
   )

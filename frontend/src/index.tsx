@@ -5,6 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import { ApolloProvider } from '@apollo/client';
 import client from './apollo';
 import { BrowserRouter } from 'react-router-dom';
+import { auth } from './firebase';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

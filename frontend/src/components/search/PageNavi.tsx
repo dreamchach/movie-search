@@ -1,36 +1,37 @@
 import React from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
 
-const PageNavi = ({page, total, setPage} : any) => {
-    console.log(page, total)
-    const prev = () => {
-        setPage(page - 1)
+const PageNavi = ({page, total, value } : any) => {
+    const navigate = useNavigate()
+    const goPrev = () => {
+        navigate(`/search?value=${value}&page=${Number(page) - 1}`)
     }
-    const next = () => {
-        setPage(page + 1)
+    const goNext = () => {
+        navigate(`/search?value=${value}&page=${Number(page) + 1}`)
     }
 
-    if(page <= 1 && total > 1) {
+    if(Number(page) <= 1 && total > 1) {
         return (
             <Pages>
-                <Button onClick={() => next()}>NEXT PAGE</Button>
+                <Button onClick={() => goNext()}>NEXT PAGE</Button>
             </Pages>
         )
     }
-    if(page > 1 && page === total) {
+    if(Number(page) > 1 && Number(page) === total) {
         return (
             <Pages>
-                <Button onClick={() => prev()}>PREV PAGE</Button>
+                <Button onClick={() => goPrev()}>PREV PAGE</Button>
             </Pages>
         )
     }
-    if(page === 1 && total === 1) {
+    if(Number(page) === 1 && total === 1) {
         return (<div></div>)
     }
     return (
         <Pages>
-            <Button onClick={() => prev()}>PREV PAGE</Button>
-            <Button onClick={() => next()}>NEXT PAGE</Button>
+            <Button onClick={() => goPrev()}>PREV PAGE</Button>
+            <Button onClick={() => goNext()}>NEXT PAGE</Button>
         </Pages>
     )
 }

@@ -1,12 +1,21 @@
+import { GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import React from 'react'
 import { styled } from 'styled-components'
+import { auth } from '../../firebase'
 
 const LoginContent = () => {
+    const provider = new GoogleAuthProvider()
+    const login = () => {
+        signInWithPopup(auth, provider)
+        .then((res) => {})
+        .catch((error) => console.log(error))
+    }
+
   return (
     <Container>
         <LoginCenter>
             <LoginLogoOne src='/images/cta-logo-one.svg' alt="logo-one" />
-            <LoginSignUpLink id='login'>지금 가입</LoginSignUpLink>
+            <LoginSignUpLink id='login' onClick={() => login()}>지금 가입</LoginSignUpLink>
             <LoginDescription>
                 영화에 대한 프리미엄 액세스를 얻으십시오.
                 디즈니 플러스 가격은 다음 주부터 1000원 인상됩니다.

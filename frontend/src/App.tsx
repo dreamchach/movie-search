@@ -12,7 +12,7 @@ function App() {
     <Routes>
       <Route path='/' element={<Login />} errorElement={<NotFound />} />
       <Route path='/main' element={<Main />} errorElement={<NotFound />} />
-      <Route path='/search/:search' element={<Search />} errorElement={<NotFound />} />
+      <Route path='/search' element={<Search />} errorElement={<NotFound />} />
       <Route path='/detail/:detail' element={<Detail />} errorElement={<NotFound />} />
       <Route path='*' element={<NotFound />} />
     </Routes>

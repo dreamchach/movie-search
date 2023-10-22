@@ -1,15 +1,42 @@
-import React, { useState } from 'react'
+import { GoogleAuthProvider, onAuthStateChanged, signInWithPopup, signOut } from 'firebase/auth'
+import React, { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { styled } from 'styled-components'
+import { auth } from '../firebase'
 
 const Layout = () => {
     const location = useLocation()
     const [value, setValue] = useState('')
     const navigate = useNavigate()
+    const provider = new GoogleAuthProvider()
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    }, [location])
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if(user) {
+                if(location.pathname === '/') navigate('/main')
+            }else if(location.pathname !== '/') navigate('/')
+        })
+    }, [])
+    
+    
     const search = async (key : string) => {
         if(key === 'Enter') {
-            await navigate(`/search/${value}`)
+            await navigate(`/search?value=${value}&page=1`)
         }
+    }
+    const login = () => {
+        signInWithPopup(auth, provider)
+        .then((res) => {})
+        .catch((error) => console.log(error))
+    }
+    const logout = () => {
+        signOut(auth)
+        .then(() => {
+            if(location.pathname !== '/') navigate('/')
+        })
+        .catch((error) => console.log(error))
     }
 
     return (
@@ -30,9 +57,10 @@ const Layout = () => {
                     value={value}
                 />
             )}
-            <Log>
-                <div>{location.pathname === '/' ? 'LOGIN' : 'LOGOUT'}</div>
-            </Log>
+            {location.pathname === '/' ? 
+                <Log onClick={() => login()}><div>LOGIN</div></Log> : 
+                <Log onClick={() => logout()}><div>LOGOUT</div></Log>
+            }
         </Nav>
     )
 }
