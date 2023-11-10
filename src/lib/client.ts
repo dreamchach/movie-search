@@ -1,7 +1,8 @@
 import { ApolloClient, InMemoryCache } from "@apollo/client"
+import { host } from '@/utill/const'
 
 const client = new ApolloClient({
-  uri: 'http://localhost:3000/api/graphql',
+  uri: `${host}/api/graphql`,
   cache: new InMemoryCache(),
 })
 
